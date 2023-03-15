@@ -1,4 +1,4 @@
-export default interface Answer {
+export interface Answer {
   id: number;
   question_id: number;
   user_answer_id: number;

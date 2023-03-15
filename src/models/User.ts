@@ -1,7 +1,7 @@
-export default interface User {
+export interface User {
   id: number;
   email: string;
   nickname: string;
-  password: number;
+  password: string;
   token_pass: string;
 }
