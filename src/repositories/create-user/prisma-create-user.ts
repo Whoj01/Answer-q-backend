@@ -7,7 +7,7 @@ import prismaDB from "../../../prisma/db/prisma";
 
 export class PrismaCreateUserRepository implements ICreateUserRepository {
   async createUser(params: CreateUserParams): Promise<User> {
-    const createUser = await prismaDB.user.create({
+    const createdUser = await prismaDB.user.create({
       data: {
         nickname: params.nickname,
         email: params.email,
@@ -15,6 +15,9 @@ export class PrismaCreateUserRepository implements ICreateUserRepository {
         token_pass: "teste",
       },
     });
-    return createUser;
+
+    delete createdUser.password;
+
+    return createdUser;
   }
 }
