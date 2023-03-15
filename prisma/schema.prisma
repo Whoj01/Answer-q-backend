@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id  Int @id @default(autoincrement())
+  email String @unique
+  nickname String 
+  password String 
+  token_pass String @unique 
+  room Room[]
+  participant Participants[]
+  questions Question[]
+  answer Answer[]
+}
+
+model Room {
+  id Int @id
+  user User @relation(fields: [user_creator_id], references: [id])
+  user_creator_id Int
+  participants Participants[] 
+  questions Question[]
+
+}
+
+model Participants {
+  id Int @id
+  room Room @relation(fields: [room_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+  room_id Int 
+  user_id Int
+  allowed Boolean
+}
+
+model Question {
+  id Int @id
+  room Room @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user User @relation(fields: [user_question_id], references: [id])
+  room_id Int
+  user_question_id Int 
+  content_question String
+  answer Answer[]
+}
+
+model Answer {
+  id Int @id
+  question Question @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user User @relation(fields: [user_answer_id], references: [id])
+  question_id Int 
+  user_answer_id Int
+  content_answer Int
+}
