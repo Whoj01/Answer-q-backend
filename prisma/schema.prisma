@@ -23,7 +23,7 @@ model User {
 }
 
 model Room {
-  id Int @id
+  id Int @id @unique
   user User @relation(fields: [user_creator_id], references: [id])
   user_creator_id Int
   participants Participants[] 

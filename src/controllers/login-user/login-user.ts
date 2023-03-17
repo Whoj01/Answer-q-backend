@@ -1,3 +1,4 @@
+import { sign } from "crypto";
 import { User } from "../../models/User";
 import { HttpResquest, HttpResponse } from "../protocols";
 import {
@@ -5,6 +6,7 @@ import {
   ILoginUserRepository,
   loginUserParams,
 } from "./protocols";
+import { signToken } from "../../utils/jwt";
 
 export class LoginUserController implements ILoginUserController {
   constructor(private readonly loginUserRepository: ILoginUserRepository) {}
@@ -27,9 +29,22 @@ export class LoginUserController implements ILoginUserController {
 
       const user = await this.loginUserRepository.findUser(body!);
 
+      if (!user) {
+        return {
+          statusCode: 404,
+          body: {
+            msg: "Incorrect username or password",
+            status: 404,
+            acepted: false,
+          },
+        };
+      }
+
+      const token = signToken(user);
+
       return {
         statusCode: 202,
-        body: "ola",
+        body: token,
       };
     } catch (err: any) {
       return {

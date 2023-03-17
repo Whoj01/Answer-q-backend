@@ -6,7 +6,7 @@ import prismaDB from "../../../prisma/db/prisma";
 import { User } from "../../models/User";
 
 export class PrismaLoginUserRepository implements ILoginUserRepository {
-  async findUser(user: loginUserParams): string {
+  async findUser(user: loginUserParams): Promise<User> {
     const findUser = await prismaDB.user.findFirst({
       where: {
         email: user.email,
@@ -19,8 +19,6 @@ export class PrismaLoginUserRepository implements ILoginUserRepository {
       },
     });
 
-    console.log(findUser);
-
-    return "oi";
+    return findUser;
   }
 }

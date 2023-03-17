@@ -8,9 +8,9 @@ export interface ILoginUserController {
 export interface loginUserParams {
   nickname?: string;
   email?: string;
-  password: string;
+  password?: string;
 }
 
 export interface ILoginUserRepository {
-  findUser(user: loginUserParams): string;
+  findUser(user: loginUserParams): Promise<User>;
 }

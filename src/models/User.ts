@@ -1,7 +1,7 @@
 export interface User {
-  id: number;
+  id?: number;
   email: string;
   nickname: string;
-  password: string;
+  password?: string;
   token_pass: string;
 }

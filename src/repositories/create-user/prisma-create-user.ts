@@ -12,7 +12,7 @@ export class PrismaCreateUserRepository implements ICreateUserRepository {
         nickname: params.nickname,
         email: params.email,
         password: params.password,
-        token_pass: "teste",
+        token_pass: "chuva",
       },
     });
 

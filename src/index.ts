@@ -5,6 +5,9 @@ import { config } from "dotenv";
 import prismaDB from "../prisma/db/prisma";
 import { PrismaLoginUserRepository } from "./repositories/login-user/prisma-login-user";
 import { LoginUserController } from "./controllers/login-user/login-user";
+import { authMiddleware } from "./middleware/Auth";
+import { PrismaCreateRoomRepository } from "./repositories/create-room/prisma-create-room";
+import { CreateRoomController } from "./controllers/create-room/create-room";
 
 async function main() {
   config();
@@ -22,7 +25,7 @@ async function main() {
       prismaLoginUserRepository
     );
 
-    const { statusCode, body } = loginUserController.handle({
+    const { statusCode, body } = await loginUserController.handle({
       body: req.body,
     });
 
@@ -37,6 +40,23 @@ async function main() {
     );
 
     const { statusCode, body } = await createUserController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.use(authMiddleware);
+
+  app.post("/rooms", async (req, res) => {
+    const prismaCreateRoomRepository = new PrismaCreateRoomRepository();
+
+    const createRoomController = new CreateRoomController(
+      prismaCreateRoomRepository
+    );
+    console.log(req.params);
+
+    const { statusCode, body } = await createRoomController.handle({
       body: req.body,
     });
 
