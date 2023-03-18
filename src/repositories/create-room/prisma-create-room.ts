@@ -3,7 +3,7 @@ import {
   CreateRoomParams,
   ICreateRoomRepository,
 } from "../../controllers/create-room/protocols";
-import prismaDB from "../../../prisma/db/prisma";
+import { prismaDB } from "../../../prisma/db/prisma";
 
 export class PrismaCreateRoomRepository implements ICreateRoomRepository {
   async createRoom(params: CreateRoomParams): Promise<Room> {
@@ -13,7 +13,6 @@ export class PrismaCreateRoomRepository implements ICreateRoomRepository {
         user_creator_id: Number(params.user_id),
       },
     });
-
     return room;
   }
 }

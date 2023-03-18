@@ -8,6 +8,7 @@ export interface ICreateRoomController {
 export interface CreateRoomParams {
   user_id: number;
   id: number;
+  name: string;
 }
 
 export interface ICreateRoomRepository {

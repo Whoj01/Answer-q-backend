@@ -3,7 +3,7 @@ import {
   ICreateUserRepository,
 } from "../../controllers/create-user/protocols";
 import { User } from "../../models/User";
-import prismaDB from "../../../prisma/db/prisma";
+import { prismaDB } from "../../../prisma/db/prisma";
 
 export class PrismaCreateUserRepository implements ICreateUserRepository {
   async createUser(params: CreateUserParams): Promise<User> {
