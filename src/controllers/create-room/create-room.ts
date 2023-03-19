@@ -12,7 +12,7 @@ export class CreateRoomController implements ICreateRoomController {
     httpResquest: HttpResquest<CreateRoomParams>
   ): Promise<HttpResponse<unknown | string>> {
     try {
-      const requiredFilds = ["user_id", "id"];
+      const requiredFilds = ["user_id", "id", "name"];
 
       for (const field of requiredFilds) {
         if (!httpResquest?.body?.[field as keyof CreateRoomParams]) {

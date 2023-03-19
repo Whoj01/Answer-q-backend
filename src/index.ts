@@ -10,6 +10,7 @@ import { PrismaCreateRoomRepository } from "./repositories/create-room/prisma-cr
 import { CreateRoomController } from "./controllers/create-room/create-room";
 import { PrismaGetRoomsByUserRepository } from "./repositories/get-room-by-user/prisma-get-rooms-by-user";
 import { GetRoomsByUserController } from "./controllers/get-rooms-user/get-rooms-user";
+import { generateHash } from "./utils/generate-remember-token";
 
 async function main() {
   config();

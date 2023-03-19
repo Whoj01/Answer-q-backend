@@ -11,6 +11,7 @@ export class PrismaCreateRoomRepository implements ICreateRoomRepository {
       data: {
         id: Number(params.id),
         user_creator_id: Number(params.user_id),
+        room_name: params.name,
       },
     });
     return room;

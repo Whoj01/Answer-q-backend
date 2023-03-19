@@ -4,6 +4,7 @@ import {
 } from "../../controllers/create-user/protocols";
 import { User } from "../../models/User";
 import { prismaDB } from "../../../prisma/db/prisma";
+import { generateHash } from "../../utils/generate-remember-token";
 
 export class PrismaCreateUserRepository implements ICreateUserRepository {
   async createUser(params: CreateUserParams): Promise<User> {
@@ -12,7 +13,7 @@ export class PrismaCreateUserRepository implements ICreateUserRepository {
         nickname: params.nickname,
         email: params.email,
         password: params.password,
-        token_pass: "chuva",
+        token_pass: generateHash(params.nickname),
       },
     });
 

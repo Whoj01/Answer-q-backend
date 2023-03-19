@@ -23,7 +23,8 @@ model User {
 }
 
 model Room {
-  id Int @id @unique 
+  id Int @id @unique
+  room_name String
   user User @relation(fields: [user_creator_id], references: [id])
   user_creator_id Int 
   CreatedDate  DateTime @default(now())
@@ -33,7 +34,7 @@ model Room {
 }
 
 model Participants {
-  id Int @id
+  id Int @id @default(autoincrement())
   room Room @relation(fields: [room_id], references: [id])
   user User @relation(fields: [user_id], references: [id])
   room_id Int 
@@ -42,7 +43,7 @@ model Participants {
 }
 
 model Question {
-  id Int @id
+  id Int @id @default(autoincrement())
   room Room @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user User @relation(fields: [user_question_id], references: [id])
   room_id Int
@@ -52,7 +53,7 @@ model Question {
 }
 
 model Answer {
-  id Int @id
+  id Int @id @default(autoincrement())
   question Question @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user User @relation(fields: [user_answer_id], references: [id])
   question_id Int 

@@ -15,6 +15,8 @@ export class PrismaGetRoomsByUserRepository
       },
       select: {
         id: true,
+        room_name: true,
+        CreatedDate: true,
         user: {
           select: {
             nickname: true,
