@@ -8,8 +8,8 @@ import { Question } from "../../models/Question";
 export default class PrismaCreateQuestionRepository
   implements ICreateQuestionRepository
 {
-  createQuestion(params: CreateQuestionParams): Promise<Question> {
-    const question = prismaDB.question.create({
+  async createQuestion(params: CreateQuestionParams): Promise<Question> {
+    const question = await prismaDB.question.create({
       data: {
         content_question: params.content_question,
         room_id: Number(params.room_id),

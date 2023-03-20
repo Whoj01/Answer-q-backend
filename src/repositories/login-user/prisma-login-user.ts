@@ -16,6 +16,7 @@ export class PrismaLoginUserRepository implements ILoginUserRepository {
         email: true,
         nickname: true,
         token_pass: true,
+        id: true,
       },
     });
 

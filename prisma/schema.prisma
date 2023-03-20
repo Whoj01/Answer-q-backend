@@ -58,5 +58,5 @@ model Answer {
   user User @relation(fields: [user_answer_id], references: [id])
   question_id Int 
   user_answer_id Int
-  content_answer Int
+  content_answer String
 }

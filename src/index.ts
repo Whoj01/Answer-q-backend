@@ -13,6 +13,8 @@ import { GetRoomsByUserController } from "./controllers/get-rooms-user/get-rooms
 import { generateHash } from "./utils/generate-remember-token";
 import PrismaCreateQuestionRepository from "./repositories/create-question/prisma-create-question";
 import { CreateQuestionController } from "./controllers/create-question/create-question";
+import { PrismaCreateAnswerRepository } from "./repositories/create-answer/prisma-create-answer";
+import { CreateAnswerControler } from "./controllers/create-answer/create-answer";
 
 async function main() {
   config();
@@ -91,6 +93,21 @@ async function main() {
     );
 
     const { statusCode, body } = await createQuestionController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.post("/answer", async (req, res) => {
+    console.log("entrou");
+    const prismaCreateAnswerRepository = new PrismaCreateAnswerRepository();
+
+    const createAnswerController = new CreateAnswerControler(
+      prismaCreateAnswerRepository
+    );
+
+    const { statusCode, body } = await createAnswerController.handle({
       body: req.body,
     });
 
