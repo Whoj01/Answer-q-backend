@@ -1,8 +1,10 @@
+import { verifyRequiredFields } from "../../utils/verify-required-fields";
 import { HttpResquest, HttpResponse } from "../protocols";
 import {
   CreateRoomParams,
   ICreateRoomController,
   ICreateRoomRepository,
+  keysOfRoomParams,
 } from "./protocols";
 
 export class CreateRoomController implements ICreateRoomController {
@@ -12,18 +14,11 @@ export class CreateRoomController implements ICreateRoomController {
     httpResquest: HttpResquest<CreateRoomParams>
   ): Promise<HttpResponse<unknown | string>> {
     try {
-      const requiredFilds = ["user_id", "id", "name"];
-
-      for (const field of requiredFilds) {
-        if (!httpResquest?.body?.[field as keyof CreateRoomParams]) {
-          return {
-            statusCode: 400,
-            body: `Field ${field} is required`,
-          };
-        }
-      }
-
       const { body } = httpResquest;
+
+      const requiredFields = verifyRequiredFields(keysOfRoomParams, body);
+
+      if (requiredFields) return requiredFields;
 
       const room = await this.createRoomRepository.createRoom(body);
 

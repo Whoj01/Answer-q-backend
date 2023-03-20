@@ -1,12 +1,14 @@
-import { sign } from "crypto";
+import { sign, verify } from "crypto";
 import { User } from "../../models/User";
 import { HttpResquest, HttpResponse } from "../protocols";
 import {
   ILoginUserController,
   ILoginUserRepository,
+  keysOfLoginUser,
   loginUserParams,
 } from "./protocols";
 import { signToken } from "../../utils/jwt";
+import { verifyRequiredFields } from "../../utils/verify-required-fields";
 
 export class LoginUserController implements ILoginUserController {
   constructor(private readonly loginUserRepository: ILoginUserRepository) {}
@@ -15,17 +17,11 @@ export class LoginUserController implements ILoginUserController {
     httpResquest: HttpResquest<User>
   ): Promise<HttpResponse<unknown>> {
     try {
-      const requiredFilds = ["email", "password"];
-
-      for (const field of requiredFilds) {
-        if (!httpResquest?.body?.[field as keyof loginUserParams].length) {
-          return {
-            statusCode: 400,
-            body: `Field ${field} is required`,
-          };
-        }
-      }
       const { body } = httpResquest;
+
+      const requiredFields = verifyRequiredFields(keysOfLoginUser, body);
+
+      if (requiredFields) return requiredFields;
 
       const user = await this.loginUserRepository.findUser(body!);
 

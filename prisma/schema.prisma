@@ -13,7 +13,7 @@ datasource db {
 model User {
   id  Int @id @default(autoincrement())
   email String @unique
-  nickname String 
+  nickname String @unique
   password String 
   token_pass String @unique 
   room Room[]

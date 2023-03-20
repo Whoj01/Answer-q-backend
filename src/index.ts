@@ -11,6 +11,8 @@ import { CreateRoomController } from "./controllers/create-room/create-room";
 import { PrismaGetRoomsByUserRepository } from "./repositories/get-room-by-user/prisma-get-rooms-by-user";
 import { GetRoomsByUserController } from "./controllers/get-rooms-user/get-rooms-user";
 import { generateHash } from "./utils/generate-remember-token";
+import PrismaCreateQuestionRepository from "./repositories/create-question/prisma-create-question";
+import { CreateQuestionController } from "./controllers/create-question/create-question";
 
 async function main() {
   config();
@@ -57,7 +59,6 @@ async function main() {
     const createRoomController = new CreateRoomController(
       prismaCreateRoomRepository
     );
-    console.log(req.params);
 
     const { statusCode, body } = await createRoomController.handle({
       body: req.body,
@@ -67,16 +68,30 @@ async function main() {
   });
 
   app.get("/rooms/:user_id", async (req, res) => {
-    const prismaGetRoomsByUser = new PrismaGetRoomsByUserRepository();
+    const prismaGetRoomsByUserRepository = new PrismaGetRoomsByUserRepository();
 
     const getRoomsByUserController = new GetRoomsByUserController(
-      prismaGetRoomsByUser
+      prismaGetRoomsByUserRepository
     );
 
     const { statusCode, body } = await getRoomsByUserController.handle({
       params: {
         user_id: req.params.user_id,
       },
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.post("/question", async (req, res) => {
+    const prismaCreateQuestionRepository = new PrismaCreateQuestionRepository();
+
+    const createQuestionController = new CreateQuestionController(
+      prismaCreateQuestionRepository
+    );
+
+    const { statusCode, body } = await createQuestionController.handle({
+      body: req.body,
     });
 
     res.status(statusCode).send(body);

@@ -6,6 +6,7 @@ import {
   IGetRoomsByUserRepository,
 } from "./protocols";
 import { PrismaGetRoomsByUserRepository } from "../../repositories/get-room-by-user/prisma-get-rooms-by-user";
+import { verifyRequiredFields } from "../../utils/verify-required-fields";
 
 export class GetRoomsByUserController implements IGetRoomsByUserController {
   constructor(
@@ -18,26 +19,18 @@ export class GetRoomsByUserController implements IGetRoomsByUserController {
     try {
       const requiredFields = ["user_id"];
 
-      for (const field of requiredFields) {
-        if (!httpResquest?.params?.[field as keyof GetRoomsUserParams]) {
-          return {
-            statusCode: 400,
-            body: {
-              msg: `Field ${field} is required`,
-              ok: false,
-              status: 400,
-            },
-          };
-        }
-      }
-
       const { params } = httpResquest;
+
+      const resultOfRequiredFields = verifyRequiredFields(
+        requiredFields,
+        params
+      );
+
+      if (resultOfRequiredFields) return resultOfRequiredFields;
 
       const rooms = await this.getRoomsByUserRepository.getRooms(
         params.user_id
       );
-
-      console.log("b");
 
       if (!rooms) {
         return {

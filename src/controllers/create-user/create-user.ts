@@ -1,9 +1,11 @@
 import { User } from "../../models/User";
+import { verifyRequiredFields } from "../../utils/verify-required-fields";
 import { HttpResquest, HttpResponse } from "../protocols";
 import {
   CreateUserParams,
   ICreateUserController,
   ICreateUserRepository,
+  keysOfUserParams,
 } from "./protocols";
 
 export class CreateUserController implements ICreateUserController {
@@ -14,18 +16,12 @@ export class CreateUserController implements ICreateUserController {
   ): Promise<HttpResponse<User | string>> {
     try {
       //verificar campos obrigatorios
-      const requiredFields = ["nickname", "email", "password"];
-
-      for (const field of requiredFields) {
-        if (!httpResquest?.body?.[field as keyof CreateUserParams].length) {
-          return {
-            statusCode: 400,
-            body: `Field ${field} is required`,
-          };
-        }
-      }
 
       const { body } = httpResquest;
+
+      const requiredFields = verifyRequiredFields(keysOfUserParams, body);
+
+      if (requiredFields) return requiredFields;
 
       const user = await this.createUserRepository.createUser(body!);
 
@@ -33,10 +29,24 @@ export class CreateUserController implements ICreateUserController {
         statusCode: 201,
         body: user,
       };
-    } catch (error) {
+    } catch (error: any) {
+      if (error.meta.target[0] === "email") {
+        return {
+          statusCode: 406,
+          body: "Email already exists",
+        };
+      }
+
+      if (error.meta.target[0] === "nickname") {
+        return {
+          statusCode: 406,
+          body: "Nickname already exists",
+        };
+      }
+
       return {
         statusCode: 500,
-        body: "Something went wrong",
+        body: error,
       };
     }
   }

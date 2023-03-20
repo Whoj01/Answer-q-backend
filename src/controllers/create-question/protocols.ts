@@ -1,8 +1,18 @@
 import { Question } from "../../models/Question";
-import { HttpResquest } from "../protocols";
+import { HttpResponse, HttpResquest } from "../protocols";
+
+class params {
+  constructor(
+    readonly room_id?: string,
+    readonly user_question_id?: string,
+    readonly content_question?: string
+  ) {}
+}
+
+export const keysOfCreateQuestionParams = Object.keys(new params());
 
 export interface ICreateQuestionController {
-  handle(httpResquest: HttpResquest<unknown>): Promise<HttpResquest<unknown>>;
+  handle(httpResquest: HttpResquest<unknown>): Promise<HttpResponse<unknown>>;
 }
 
 export interface CreateQuestionParams {
