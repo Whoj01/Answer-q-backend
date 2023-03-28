@@ -10,11 +10,15 @@ import { PrismaCreateRoomRepository } from "./repositories/create-room/prisma-cr
 import { CreateRoomController } from "./controllers/create-room/create-room";
 import { PrismaGetRoomsByUserRepository } from "./repositories/get-room-by-user/prisma-get-rooms-by-user";
 import { GetRoomsByUserController } from "./controllers/get-rooms-user/get-rooms-user";
-import { generateHash } from "./utils/generate-remember-token";
 import PrismaCreateQuestionRepository from "./repositories/create-question/prisma-create-question";
 import { CreateQuestionController } from "./controllers/create-question/create-question";
-import { PrismaCreateAnswerRepository } from "./repositories/create-answer/prisma-create-answer";
-import { CreateAnswerControler } from "./controllers/create-answer/create-answer";
+import { PrismaCreateAnswerRepository } from "./repositories/answer/create-answer/prisma-create-answer";
+import { CreateAnswerControler } from "./controllers/answer/create-answer/create-answer";
+import { PrismaUpdateAnswerRepository } from "./repositories/answer/update-answer/prisma-update-answer";
+import { UpdateAnswerController } from "./controllers/answer/update-answer/update-answer";
+import { BodyWithToken } from "./utils/Body-with-token";
+import { PrismaDeleteAnswerRepository } from "./repositories/answer/delete-answer/prisma-delete-answer";
+import { DeleteAnswerController } from "./controllers/answer/delete-answer/delete-answer";
 
 async function main() {
   config();
@@ -63,7 +67,7 @@ async function main() {
     );
 
     const { statusCode, body } = await createRoomController.handle({
-      body: req.body,
+      body: BodyWithToken(req),
     });
 
     res.status(statusCode).send(body);
@@ -93,14 +97,13 @@ async function main() {
     );
 
     const { statusCode, body } = await createQuestionController.handle({
-      body: req.body,
+      body: BodyWithToken(req),
     });
 
     res.status(statusCode).send(body);
   });
 
   app.post("/answer", async (req, res) => {
-    console.log("entrou");
     const prismaCreateAnswerRepository = new PrismaCreateAnswerRepository();
 
     const createAnswerController = new CreateAnswerControler(
@@ -108,7 +111,35 @@ async function main() {
     );
 
     const { statusCode, body } = await createAnswerController.handle({
-      body: req.body,
+      body: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.patch("/answer", async (req, res) => {
+    const prismaUpdateAnswerRepository = new PrismaUpdateAnswerRepository();
+
+    const updateAnswerController = new UpdateAnswerController(
+      prismaUpdateAnswerRepository
+    );
+
+    const { statusCode, body } = await updateAnswerController.handle({
+      body: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.delete("/answer/:id", async (req, res) => {
+    const prismaDeleteAnswerRepository = new PrismaDeleteAnswerRepository();
+
+    const deleteAnswerController = new DeleteAnswerController(
+      prismaDeleteAnswerRepository
+    );
+
+    const { statusCode, body } = await deleteAnswerController.handle({
+      body: BodyWithToken(req),
     });
 
     res.status(statusCode).send(body);

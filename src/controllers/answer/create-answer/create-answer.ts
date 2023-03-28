@@ -1,5 +1,5 @@
-import { verifyRequiredFields } from "../../utils/verify-required-fields";
-import { HttpResquest, HttpResponse } from "../protocols";
+import { verifyRequiredFields } from "../../../utils/verify-required-fields";
+import { HttpResquest, HttpResponse } from "../../protocols";
 import {
   CreateAnswerParams,
   ICreateAnswerController,

@@ -1,5 +1,5 @@
 import { Answer } from "@prisma/client";
-import { HttpResponse, HttpResquest } from "../protocols";
+import { HttpResponse, HttpResquest } from "../../protocols";
 
 class params {
   constructor(
@@ -17,7 +17,7 @@ export interface ICreateAnswerController {
 
 export interface CreateAnswerParams {
   question_id: string;
-  user_answer_id: string;
+  user_id: string;
   content_answer: string;
 }
 

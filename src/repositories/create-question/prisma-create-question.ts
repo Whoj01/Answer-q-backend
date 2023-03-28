@@ -13,7 +13,7 @@ export default class PrismaCreateQuestionRepository
       data: {
         content_question: params.content_question,
         room_id: Number(params.room_id),
-        user_question_id: Number(params.user_question_id),
+        user_question_id: Number(params.user_id),
       },
     });
 

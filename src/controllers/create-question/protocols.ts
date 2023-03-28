@@ -17,7 +17,7 @@ export interface ICreateQuestionController {
 
 export interface CreateQuestionParams {
   room_id: string;
-  user_question_id: string;
+  user_id: string;
   content_question: string;
 }
 
