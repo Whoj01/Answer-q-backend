@@ -3,4 +3,7 @@ export interface Answer {
   question_id: number;
   user_answer_id: number;
   content_answer: string;
+  user?: {
+    nickname: string
+  }
 }

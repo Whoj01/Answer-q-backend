@@ -10,8 +10,8 @@ import { PrismaCreateRoomRepository } from "./repositories/create-room/prisma-cr
 import { CreateRoomController } from "./controllers/create-room/create-room";
 import { PrismaGetRoomsByUserRepository } from "./repositories/get-room-by-user/prisma-get-rooms-by-user";
 import { GetRoomsByUserController } from "./controllers/get-rooms-user/get-rooms-user";
-import PrismaCreateQuestionRepository from "./repositories/create-question/prisma-create-question";
-import { CreateQuestionController } from "./controllers/create-question/create-question";
+import PrismaCreateQuestionRepository from "./repositories/question/create-question/prisma-create-question";
+import { CreateQuestionController } from "./controllers/question/create-question/create-question";
 import { PrismaCreateAnswerRepository } from "./repositories/answer/create-answer/prisma-create-answer";
 import { CreateAnswerControler } from "./controllers/answer/create-answer/create-answer";
 import { PrismaUpdateAnswerRepository } from "./repositories/answer/update-answer/prisma-update-answer";
@@ -19,6 +19,8 @@ import { UpdateAnswerController } from "./controllers/answer/update-answer/updat
 import { BodyWithToken } from "./utils/Body-with-token";
 import { PrismaDeleteAnswerRepository } from "./repositories/answer/delete-answer/prisma-delete-answer";
 import { DeleteAnswerController } from "./controllers/answer/delete-answer/delete-answer";
+import { PrismGetAnswersFromQuestion } from "./repositories/question/get-answers-from-question/prisma-get-answers-from-question";
+import { GetAnswersFromQuestionController } from "./controllers/question/get-answers-from-question/get-answers-from-question";
 
 async function main() {
   config();
@@ -98,6 +100,21 @@ async function main() {
 
     const { statusCode, body } = await createQuestionController.handle({
       body: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.get("/question/:question_id", async (req, res) => {
+    const prismaGetAnswersFromQuestion = new PrismGetAnswersFromQuestion();
+
+    const getAnswersFromQuestionController =
+      new GetAnswersFromQuestionController(prismaGetAnswersFromQuestion);
+
+    const { statusCode, body } = await getAnswersFromQuestionController.handle({
+      params: {
+        question_id: req.params.question_id,
+      },
     });
 
     res.status(statusCode).send(body);

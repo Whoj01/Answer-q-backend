@@ -32,7 +32,7 @@ export class DeleteAnswerController implements IDeleteAnswerController {
         statusCode: 202,
         body: {
           msg: "Answer deleted successfully",
-          ok: false,
+          ok: true,
           status: 202,
         }         
      }

@@ -1,5 +1,5 @@
-import { Question } from "../../models/Question";
-import { HttpResponse, HttpResquest } from "../protocols";
+import { Question } from "../../../models/Question";
+import { HttpResponse, HttpResquest } from "../../protocols";
 
 class params {
   constructor(

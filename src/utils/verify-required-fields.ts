@@ -8,7 +8,11 @@ export function verifyRequiredFields(
     if (!body?.[field]) {
       return {
         statusCode: 400,
-        body: `Field ${field} is required`,
+        body: {
+          msg: `Field ${field} is required`,
+          ok: false,
+          status: 400
+        } 
       };
     }
   }

@@ -1,3 +1,8 @@
+import {
+  errorRequest,
+  successesRequest,
+  tryAgainLater,
+} from "../../../utils/responses";
 import { verifyRequiredFields } from "../../../utils/verify-required-fields";
 import { HttpResquest, HttpResponse } from "../../protocols";
 import {
@@ -26,29 +31,15 @@ export class CreateAnswerControler implements ICreateAnswerController {
       const answer = await this.createAnswerRepository.createAnswer(body);
 
       if (!answer) {
-        return {
-          statusCode: 503,
-          body: {
-            msg: "Is not possible to create a answer, try again later",
-            ok: false,
-            status: 503,
-          },
-        };
+        return tryAgainLater(
+          "Is not possible to create a answer, try again later",
+          503
+        );
       }
 
-      return {
-        statusCode: 201,
-        body: {
-          msg: "Answer created sucessfully",
-          ok: true,
-          status: 201,
-        },
-      };
-    } catch (error) {
-      return {
-        statusCode: 500,
-        body: "Something went wrong",
-      };
+      return successesRequest("Answer created sucessfully", 201, answer);
+    } catch (error: any) {
+      return errorRequest(error.message, 500);
     }
   }
 }

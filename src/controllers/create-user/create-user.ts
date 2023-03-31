@@ -1,4 +1,5 @@
 import { User } from "../../models/User";
+import { errorRequest, successesRequest } from "../../utils/responses";
 import { verifyRequiredFields } from "../../utils/verify-required-fields";
 import { HttpResquest, HttpResponse } from "../protocols";
 import {
@@ -25,29 +26,17 @@ export class CreateUserController implements ICreateUserController {
 
       const user = await this.createUserRepository.createUser(body!);
 
-      return {
-        statusCode: 201,
-        body: user,
-      };
+      successesRequest("User created successfully", 201, user)
     } catch (error: any) {
       if (error.meta.target[0] === "email") {
-        return {
-          statusCode: 406,
-          body: "Email already exists",
-        };
+        return errorRequest("Email already exists", 406)
       }
 
       if (error.meta.target[0] === "nickname") {
-        return {
-          statusCode: 406,
-          body: "Nickname already exists",
-        };
+        return errorRequest("Nickname already exists", 406)
       }
 
-      return {
-        statusCode: 500,
-        body: error,
-      };
+      return errorRequest(error.message, 500)
     }
   }
 }

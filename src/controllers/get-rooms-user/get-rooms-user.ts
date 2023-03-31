@@ -7,6 +7,7 @@ import {
 } from "./protocols";
 import { PrismaGetRoomsByUserRepository } from "../../repositories/get-room-by-user/prisma-get-rooms-by-user";
 import { verifyRequiredFields } from "../../utils/verify-required-fields";
+import { errorRequest, successesRequest, tryAgainLater } from "../../utils/responses";
 
 export class GetRoomsByUserController implements IGetRoomsByUserController {
   constructor(
@@ -33,27 +34,12 @@ export class GetRoomsByUserController implements IGetRoomsByUserController {
       );
 
       if (!rooms) {
-        return {
-          statusCode: 503,
-          body: {
-            msg: "is not possible to get rooms, try again later",
-          },
-        };
+        return tryAgainLater("is not possible to get rooms, try again later", 503)  
       }
 
-      return {
-        statusCode: 302,
-        body: {
-          msg: "Rooms get successfully",
-          ok: true,
-          rooms: rooms,
-        },
-      };
+      return successesRequest("Rooms get successfully", 302, rooms) 
     } catch (error: any) {
-      return {
-        statusCode: 500,
-        body: error.message,
-      };
+      return errorRequest(error.message, 500)
     }
   }
 }

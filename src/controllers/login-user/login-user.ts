@@ -9,6 +9,8 @@ import {
 } from "./protocols";
 import { signToken } from "../../utils/jwt";
 import { verifyRequiredFields } from "../../utils/verify-required-fields";
+import { errorRequest, successesRequest, tryAgainLater } from "../../utils/responses";
+import { ok } from "assert";
 
 export class LoginUserController implements ILoginUserController {
   constructor(private readonly loginUserRepository: ILoginUserRepository) {}
@@ -26,27 +28,15 @@ export class LoginUserController implements ILoginUserController {
       const user = await this.loginUserRepository.findUser(body!);
 
       if (!user) {
-        return {
-          statusCode: 404,
-          body: {
-            msg: "Incorrect username or password",
-            status: 404,
-            acepted: false,
-          },
-        };
+        return tryAgainLater("Incorrect username or password", 404)
       }
 
       const token = signToken(user);
 
-      return {
-        statusCode: 202,
-        body: token,
-      };
+      return successesRequest("User loged successfully", 202, token)
+        
     } catch (err: any) {
-      return {
-        statusCode: 500,
-        body: err.message,
-      };
+      return errorRequest(err.message, 500)
     }
   }
 }

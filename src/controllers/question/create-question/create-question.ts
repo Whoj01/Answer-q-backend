@@ -1,5 +1,5 @@
-import { verifyRequiredFields } from "../../utils/verify-required-fields";
-import { HttpResponse, HttpResquest } from "../protocols";
+import * as verifyRequiredFields from "../../../utils/verify-required-fields";
+import { HttpResponse, HttpResquest } from "../../protocols";
 import {
   CreateQuestionParams,
   ICreateQuestionController,
@@ -18,7 +18,7 @@ export class CreateQuestionController implements ICreateQuestionController {
     try {
       const { body } = httpResquest;
 
-      const requiredFields = verifyRequiredFields(
+      const requiredFields = verifyRequiredFields.verifyRequiredFields(
         keysOfCreateQuestionParams,
         body
       );

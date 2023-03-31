@@ -1,9 +1,9 @@
-import { prismaDB } from "../../../prisma/db/prisma";
+import { prismaDB } from "../../../../prisma/db/prisma";
 import {
   CreateQuestionParams,
   ICreateQuestionRepository,
-} from "../../controllers/create-question/protocols";
-import { Question } from "../../models/Question";
+} from "../../../controllers/question/create-question/protocols";
+import { Question } from "../../../models/Question";
 
 export default class PrismaCreateQuestionRepository
   implements ICreateQuestionRepository
