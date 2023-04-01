@@ -1,3 +1,5 @@
+import { Room } from "../models/Room";
+
 export interface HttpResponse<T> {
   statusCode: number;
   body: {
@@ -18,6 +20,8 @@ export interface HttpResquest<B> {
 export type paramsBody<T> = Pick<HttpResquest<T>, "body">;
 
 export type params<T> = Pick<HttpResquest<T>, "params">;
+
+export type creatorOfRoom = Pick<Room, "user_creator_id">;
 
 export type requiredFieldsError = HttpResponse<string | null>;
 

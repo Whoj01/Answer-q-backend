@@ -27,6 +27,8 @@ import { PrismaDeleteQuestionRepository } from "./repositories/question/delete-q
 import { DeleteQuestionController } from "./controllers/question/delete-question/delete-question";
 import { PrismaDeleteRoomRepository } from "./repositories/room/delete-room/prisma-delete-room";
 import { DeleteRoomController } from "./controllers/room/delete-room/delete-room";
+import { PrismaEditRoomRepository } from "./repositories/room/edit-room/prisma-edit-room";
+import { EditRoomController } from "./controllers/room/edit-room/edit-room";
 
 async function main() {
   config();
@@ -103,6 +105,18 @@ async function main() {
     );
 
     const { statusCode, body } = await deleteRoomController.handle({
+      params: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.patch("/rooms/:room_id", async (req, res) => {
+    const prismaEditRoomRepository = new PrismaEditRoomRepository();
+
+    const editRoomController = new EditRoomController(prismaEditRoomRepository);
+
+    const { statusCode, body } = await editRoomController.handle({
       params: BodyWithToken(req),
     });
 
