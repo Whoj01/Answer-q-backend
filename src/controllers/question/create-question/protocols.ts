@@ -4,7 +4,7 @@ import { HttpResponse, HttpResquest } from "../../protocols";
 class params {
   constructor(
     readonly room_id?: string,
-    readonly user_question_id?: string,
+    readonly user_id?: string,
     readonly content_question?: string
   ) {}
 }
