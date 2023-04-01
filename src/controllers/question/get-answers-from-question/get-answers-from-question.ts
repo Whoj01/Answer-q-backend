@@ -5,25 +5,32 @@ import {
   tryAgainLater,
 } from "../../../utils/responses";
 import { verifyRequiredFields } from "../../../utils/verify-required-fields";
-import { HttpResponse, HttpResquest, IController } from "../../protocols";
+import {
+  HttpResponse,
+  HttpResquest,
+  IController,
+  params,
+  requiredFieldsError,
+} from "../../protocols";
 import {
   AnswerFromQuestion,
   GetAnswersFromQuestionParams,
+  IGetAnswersFromQuestionRepository,
   KeysOfGetAnswerFromRoom,
 } from "./protocols";
 
 export class GetAnswersFromQuestionController implements IController {
   constructor(
-    private readonly getAnswersFromQuestionRepository: PrismGetAnswersFromQuestion
+    private readonly getAnswersFromQuestionRepository: IGetAnswersFromQuestionRepository
   ) {}
 
   async handle(
     httpResquest: HttpResquest<GetAnswersFromQuestionParams>
   ): Promise<HttpResponse<AnswerFromQuestion | string>> {
     try {
-      const { params } = httpResquest;
+      const { params }: params<GetAnswersFromQuestionParams> = httpResquest;
 
-      const requiredFields = verifyRequiredFields(
+      const requiredFields: requiredFieldsError = verifyRequiredFields(
         KeysOfGetAnswerFromRoom,
         params
       );

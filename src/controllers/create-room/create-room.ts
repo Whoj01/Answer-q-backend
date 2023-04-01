@@ -1,5 +1,16 @@
+import { Room } from "../../models/Room";
+import {
+  errorRequest,
+  successesRequest,
+  tryAgainLater,
+} from "../../utils/responses";
 import { verifyRequiredFields } from "../../utils/verify-required-fields";
-import { HttpResquest, HttpResponse } from "../protocols";
+import {
+  HttpResquest,
+  HttpResponse,
+  paramsBody,
+  requiredFieldsError,
+} from "../protocols";
 import {
   CreateRoomParams,
   ICreateRoomController,
@@ -12,40 +23,30 @@ export class CreateRoomController implements ICreateRoomController {
 
   async handle(
     httpResquest: HttpResquest<CreateRoomParams>
-  ): Promise<HttpResponse<unknown | string>> {
+  ): Promise<HttpResponse<string>> {
     try {
-      const { body } = httpResquest;
+      const { body }: paramsBody<CreateRoomParams> = httpResquest;
 
-      const requiredFields = verifyRequiredFields(keysOfRoomParams, body);
+      const requiredFields: requiredFieldsError = verifyRequiredFields(
+        keysOfRoomParams,
+        body
+      );
 
       if (requiredFields) return requiredFields;
 
-      const room = await this.createRoomRepository.createRoom(body);
+      const room: Room | null = await this.createRoomRepository.createRoom(
+        body
+      );
 
-      if (!room) {
-        return {
-          statusCode: 503,
-          body: {
-            msg: "Is not possible to create a room now, try again later",
-            ok: false,
-            status: 503,
-          },
-        };
-      }
+      if (!room)
+        return tryAgainLater(
+          "Its was not possible to create a room now, try again later",
+          503
+        );
 
-      return {
-        statusCode: 201,
-        body: {
-          msg: "Room created successfully",
-          ok: true,
-          status: 201,
-        },
-      };
+      return successesRequest("Room created successfully", 201);
     } catch (error: any) {
-      return {
-        statusCode: 500,
-        body: error.message,
-      };
+      return errorRequest(error.message, 500);
     }
   }
 }

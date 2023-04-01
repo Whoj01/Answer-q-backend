@@ -4,7 +4,12 @@ import {
   tryAgainLater,
 } from "../../../utils/responses";
 import * as verifyRequiredFields from "../../../utils/verify-required-fields";
-import { HttpResponse, HttpResquest } from "../../protocols";
+import {
+  HttpResponse,
+  HttpResquest,
+  paramsBody,
+  requiredFieldsError,
+} from "../../protocols";
 import {
   CreateQuestionParams,
   ICreateQuestionController,
@@ -19,13 +24,11 @@ export class CreateQuestionController implements ICreateQuestionController {
 
   async handle(
     httpResquest: HttpResquest<CreateQuestionParams>
-  ): Promise<HttpResponse<string | unknown>> {
+  ): Promise<HttpResponse<string>> {
     try {
-      const {
-        body,
-      }: Pick<HttpResquest<CreateQuestionParams>, "body"> = httpResquest;
+      const { body }: paramsBody<CreateQuestionParams> = httpResquest;
 
-      const requiredFields: HttpResponse<string> | null =
+      const requiredFields: requiredFieldsError =
         verifyRequiredFields.verifyRequiredFields(
           keysOfCreateQuestionParams,
           body

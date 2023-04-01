@@ -79,7 +79,7 @@ async function main() {
     res.status(statusCode).send(body);
   });
 
-  app.get("/rooms/:user_id", async (req, res) => {
+  app.get("/rooms", async (req, res) => {
     const prismaGetRoomsByUserRepository = new PrismaGetRoomsByUserRepository();
 
     const getRoomsByUserController = new GetRoomsByUserController(
@@ -88,7 +88,7 @@ async function main() {
 
     const { statusCode, body } = await getRoomsByUserController.handle({
       params: {
-        user_id: req.params.user_id,
+        user_id: BodyWithToken(req),
       },
     });
 

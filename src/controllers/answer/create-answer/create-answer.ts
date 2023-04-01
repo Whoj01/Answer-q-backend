@@ -1,10 +1,16 @@
+import { Answer } from "../../../models/Answer";
 import {
   errorRequest,
   successesRequest,
   tryAgainLater,
 } from "../../../utils/responses";
 import { verifyRequiredFields } from "../../../utils/verify-required-fields";
-import { HttpResquest, HttpResponse } from "../../protocols";
+import {
+  HttpResquest,
+  HttpResponse,
+  paramsBody,
+  requiredFieldsError,
+} from "../../protocols";
 import {
   CreateAnswerParams,
   ICreateAnswerController,
@@ -17,25 +23,25 @@ export class CreateAnswerControler implements ICreateAnswerController {
 
   async handle(
     httpResquest: HttpResquest<CreateAnswerParams>
-  ): Promise<HttpResponse<string | unknown>> {
+  ): Promise<HttpResponse<string>> {
     try {
-      const { body } = httpResquest;
+      const { body }: paramsBody<CreateAnswerParams> = httpResquest;
 
-      const requiredFields = verifyRequiredFields(
+      const requiredFields: requiredFieldsError = verifyRequiredFields(
         keysOfCreateAnswerParams,
         body
       );
 
       if (requiredFields) return requiredFields;
 
-      const answer = await this.createAnswerRepository.createAnswer(body);
+      const answer: Answer | null =
+        await this.createAnswerRepository.createAnswer(body);
 
-      if (!answer) {
+      if (!answer)
         return tryAgainLater(
           "Is not possible to create a answer, try again later",
           503
         );
-      }
 
       return successesRequest("Answer created sucessfully", 201, answer);
     } catch (error: any) {

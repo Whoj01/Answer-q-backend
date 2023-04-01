@@ -4,4 +4,5 @@ export interface Room {
   room_name?: string;
   user?: { nickname: string };
   _count?: { participants: number; questions: number };
+  CreatedDate?: Date;
 }

@@ -1,48 +1,52 @@
+import {
+  errorRequest,
+  successesRequest,
+  tryAgainLater,
+} from "../../../utils/responses";
 import { verifyRequiredFields } from "../../../utils/verify-required-fields";
-import { HttpResquest, HttpResponse } from "../../protocols";
-import { DeleteAnswerParams, IDeleteAnswerController, IDeleteAnswerRepository, keysOfDeleteAnswer } from "./protocols";
-
+import {
+  HttpResquest,
+  HttpResponse,
+  paramsBody,
+  requiredFieldsError,
+} from "../../protocols";
+import {
+  DeleteAnswerParams,
+  IDeleteAnswerController,
+  IDeleteAnswerRepository,
+  keysOfDeleteAnswer,
+} from "./protocols";
 
 export class DeleteAnswerController implements IDeleteAnswerController {
+  constructor(
+    private readonly deleteAnswerRepository: IDeleteAnswerRepository
+  ) {}
 
-  constructor(private readonly deleteAnswerRepository: IDeleteAnswerRepository) {}
-
-  async handle(httpResquest: HttpResquest<DeleteAnswerParams>): Promise<HttpResponse<string | unknown>> {
+  async handle(
+    httpResquest: HttpResquest<DeleteAnswerParams>
+  ): Promise<HttpResponse<string>> {
     try {
-      const { body } = httpResquest
+      const { body }: paramsBody<DeleteAnswerParams> = httpResquest;
 
-      const requiredFields = verifyRequiredFields(keysOfDeleteAnswer, body)
+      const requiredFields: requiredFieldsError = verifyRequiredFields(
+        keysOfDeleteAnswer,
+        body
+      );
 
-      if(requiredFields) return requiredFields
+      if (requiredFields) return requiredFields;
 
-      const deleteAnswer = await this.deleteAnswerRepository.deleteAnswer(body)
+      const deleteAnswer: boolean =
+        await this.deleteAnswerRepository.deleteAnswer(body);
 
-      if(!deleteAnswer) {
-        return {
-          statusCode: 503,
-          body: {
-            msg: "Is not possible to delete the answer, try again later",
-            ok: false,
-            status: 503,
-          }         
-       }
-      }
+      if (!deleteAnswer)
+        return tryAgainLater(
+          "Its not possible to delete the answer, try again later",
+          503
+        );
 
-      return {
-        statusCode: 202,
-        body: {
-          msg: "Answer deleted successfully",
-          ok: true,
-          status: 202,
-        }         
-     }
-
+      return successesRequest("Answer deleted successfully", 200);
     } catch (error: any) {
-      return {
-        statusCode: 500,
-        body: error.message
-      }
+      return errorRequest(error.message, 500);
     }
   }
-
 }

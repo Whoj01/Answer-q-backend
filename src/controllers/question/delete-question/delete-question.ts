@@ -4,7 +4,13 @@ import {
   tryAgainLater,
 } from "../../../utils/responses";
 import { verifyRequiredFields } from "../../../utils/verify-required-fields";
-import { HttpResponse, HttpResquest, IController } from "../../protocols";
+import {
+  HttpResponse,
+  HttpResquest,
+  IController,
+  paramsBody,
+  requiredFieldsError,
+} from "../../protocols";
 import {
   DeleteQuestionParams,
   IDeleteQuestionRepository,
@@ -20,11 +26,9 @@ export class DeleteQuestionController implements IController {
     httpResquest: HttpResquest<DeleteQuestionParams>
   ): Promise<HttpResponse<string>> {
     try {
-      const {
-        body,
-      }: Pick<HttpResquest<DeleteQuestionParams>, "body"> = httpResquest;
+      const { body }: paramsBody<DeleteQuestionParams> = httpResquest;
 
-      const requiredFields: HttpResponse<string> | null = verifyRequiredFields(
+      const requiredFields: requiredFieldsError = verifyRequiredFields(
         KeysOfDeleteQuestionParams,
         body
       );
@@ -37,7 +41,7 @@ export class DeleteQuestionController implements IController {
       return questionDelete
         ? successesRequest("Question deleted successfully", 200)
         : tryAgainLater(
-            "is was not possible to delete the question. Try again later!",
+            "its was not possible to delete the question. Try again later!",
             406
           );
     } catch (error: any) {

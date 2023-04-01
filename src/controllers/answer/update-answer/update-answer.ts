@@ -1,46 +1,53 @@
+import { Answer } from "../../../models/Answer";
+import {
+  errorRequest,
+  successesRequest,
+  tryAgainLater,
+} from "../../../utils/responses";
 import { verifyRequiredFields } from "../../../utils/verify-required-fields";
-import { HttpResquest, HttpResponse } from "../../protocols";
-import { IUpdateAnswerController, IUpdateAnswerRepository, UpdateAnswerParams, keysOfUpdateAnswer } from "./protocols";
+import {
+  HttpResquest,
+  HttpResponse,
+  paramsBody,
+  requiredFieldsError,
+} from "../../protocols";
+import {
+  IUpdateAnswerController,
+  IUpdateAnswerRepository,
+  UpdateAnswerParams,
+  keysOfUpdateAnswer,
+} from "./protocols";
 
 export class UpdateAnswerController implements IUpdateAnswerController {
-  constructor(private readonly updateAnswerRepository: IUpdateAnswerRepository){}
+  constructor(
+    private readonly updateAnswerRepository: IUpdateAnswerRepository
+  ) {}
 
-
-  async handle(HttpResquest: HttpResquest<UpdateAnswerParams>): Promise<HttpResponse<string | unknown>> {
+  async handle(
+    HttpResquest: HttpResquest<UpdateAnswerParams>
+  ): Promise<HttpResponse<string>> {
     try {
-      const { body } = HttpResquest
+      const { body }: paramsBody<UpdateAnswerParams> = HttpResquest;
 
-      const requiredFields = verifyRequiredFields(keysOfUpdateAnswer, body)
+      const requiredFields: requiredFieldsError = verifyRequiredFields(
+        keysOfUpdateAnswer,
+        body
+      );
 
-      if(requiredFields) return requiredFields
+      if (requiredFields) return requiredFields;
 
-      const updatedAnswer = await this.updateAnswerRepository.updateAnswer(body)
+      const updatedAnswer: Answer =
+        await this.updateAnswerRepository.updateAnswer(body);
 
-      if(!updatedAnswer) {
-        return {
-          statusCode: 503,
-          body: {
-            msg: "Is not possible to create a answer, try again later",
-            ok: false,
-            status: 503,
-          },
-        };
-      }
+      if (!updatedAnswer)
+        return tryAgainLater(
+          "Its was not possible to create a answer, try again later",
+          503
+        );
 
-      return {
-        statusCode: 201,
-        body: {
-          msg: "Answer updated sucessfully",
-          ok: true,
-          status: 201,
-        },
-      }
-
-    } catch (error:any) {
-      return {
-        statusCode: 500,
-        body: error.message
-      }
+      return successesRequest("Answer updated sucessfully", 202);
+    } catch (error: any) {
+      return errorRequest(error.message, 500);
     }
   }
 }

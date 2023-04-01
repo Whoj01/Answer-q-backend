@@ -1,7 +1,16 @@
 import { User } from "../../models/User";
-import { errorRequest, successesRequest } from "../../utils/responses";
+import {
+  errorRequest,
+  successesRequest,
+  tryAgainLater,
+} from "../../utils/responses";
 import { verifyRequiredFields } from "../../utils/verify-required-fields";
-import { HttpResquest, HttpResponse } from "../protocols";
+import {
+  HttpResquest,
+  HttpResponse,
+  paramsBody,
+  requiredFieldsError,
+} from "../protocols";
 import {
   CreateUserParams,
   ICreateUserController,
@@ -18,25 +27,34 @@ export class CreateUserController implements ICreateUserController {
     try {
       //verificar campos obrigatorios
 
-      const { body } = httpResquest;
+      const { body }: paramsBody<CreateUserParams> = httpResquest;
 
-      const requiredFields = verifyRequiredFields(keysOfUserParams, body);
+      const requiredFields: requiredFieldsError = verifyRequiredFields(
+        keysOfUserParams,
+        body
+      );
 
       if (requiredFields) return requiredFields;
 
-      const user = await this.createUserRepository.createUser(body!);
+      const user: User = await this.createUserRepository.createUser(body);
 
-      successesRequest("User created successfully", 201, user)
+      if (!user)
+        return tryAgainLater(
+          "its was not possible to create a user. Try again later!",
+          503
+        );
+
+      successesRequest("User created successfully", 201, user);
     } catch (error: any) {
       if (error.meta.target[0] === "email") {
-        return errorRequest("Email already exists", 406)
+        return errorRequest("Email already exists", 406);
       }
 
       if (error.meta.target[0] === "nickname") {
-        return errorRequest("Nickname already exists", 406)
+        return errorRequest("Nickname already exists", 406);
       }
 
-      return errorRequest(error.message, 500)
+      return errorRequest(error.message, 500);
     }
   }
 }

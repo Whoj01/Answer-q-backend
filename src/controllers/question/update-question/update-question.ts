@@ -20,7 +20,7 @@ export class UpdateQuestionController implements IController {
 
   async handle(
     httpResquest: HttpResquest<UpdateQuestionParams>
-  ): Promise<HttpResponse<unknown>> {
+  ): Promise<HttpResponse<Question | string>> {
     try {
       const {
         body,
