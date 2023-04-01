@@ -18,7 +18,7 @@ export class PrismaUpdateQuestionRepository
       },
     });
 
-    if (find.user_question_id !== params.user_id) return;
+    if (find.user_question_id !== Number(params.user_id)) return;
 
     const question = prismaDB.question.update({
       where: {

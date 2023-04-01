@@ -23,6 +23,8 @@ import { PrismGetAnswersFromQuestion } from "./repositories/question/get-answers
 import { GetAnswersFromQuestionController } from "./controllers/question/get-answers-from-question/get-answers-from-question";
 import { PrismaUpdateQuestionRepository } from "./repositories/question/update-question/prisma-update-question";
 import { UpdateQuestionController } from "./controllers/question/update-question/update-question";
+import { PrismaDeleteQuestionRepository } from "./repositories/question/delete-question/prisma-delete-question";
+import { DeleteQuestionController } from "./controllers/question/delete-question/delete-question";
 
 async function main() {
   config();
@@ -108,7 +110,6 @@ async function main() {
   });
 
   app.patch("/question", async (req, res) => {
-    console.log("entrou");
     const prismaUpdateQuestionRepository = new PrismaUpdateQuestionRepository();
 
     const updateQuestionContoller = new UpdateQuestionController(
@@ -116,6 +117,20 @@ async function main() {
     );
 
     const { statusCode, body } = await updateQuestionContoller.handle({
+      body: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.delete("/question/:question_id", async (req, res) => {
+    const prismaDeleteQuestionRepository = new PrismaDeleteQuestionRepository();
+
+    const deleteQuestionController = new DeleteQuestionController(
+      prismaDeleteQuestionRepository
+    );
+
+    const { statusCode, body } = await deleteQuestionController.handle({
       body: BodyWithToken(req),
     });
 

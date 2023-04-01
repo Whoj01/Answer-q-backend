@@ -1,26 +1,33 @@
 import { HttpResponse } from "../controllers/protocols";
 
-export function tryAgainLater(message: string, statusCode: number) : HttpResponse<string> {
+export function tryAgainLater(
+  message: string,
+  statusCode: number
+): HttpResponse<string> {
   return {
     statusCode,
     body: {
       msg: message,
       ok: false,
-      status: statusCode
-    }
-  }
+      status: statusCode,
+    },
+  };
 }
 
-export function successesRequest(message: string, statusCode: number, data: any) {
+export function successesRequest(
+  message: string,
+  statusCode: number,
+  data?: any
+) {
   return {
     statusCode,
     body: {
       msg: message,
       data,
       ok: true,
-      status: statusCode
-    }
-  }
+      status: statusCode,
+    },
+  };
 }
 
 export function errorRequest(message: string, statusCode: number) {
@@ -29,7 +36,7 @@ export function errorRequest(message: string, statusCode: number) {
     body: {
       msg: message,
       ok: false,
-      status: statusCode
-    }
-  }
+      status: statusCode,
+    },
+  };
 }

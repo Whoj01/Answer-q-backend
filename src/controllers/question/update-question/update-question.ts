@@ -22,7 +22,9 @@ export class UpdateQuestionController implements IController {
     httpResquest: HttpResquest<UpdateQuestionParams>
   ): Promise<HttpResponse<unknown>> {
     try {
-      const { body } = httpResquest;
+      const {
+        body,
+      }: Pick<HttpResquest<UpdateQuestionParams>, "body"> = httpResquest;
 
       const requiredFields: HttpResponse<string> = verifyRequiredFields(
         KeysOfUpdateQuestionParams,
