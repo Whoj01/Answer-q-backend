@@ -7,12 +7,12 @@ export function verifyRequiredFields(
   for (const field of fields) {
     if (!body?.[field]) {
       return {
-        statusCode: 400,
+        statusCode: 206,
         body: {
           msg: `Field ${field} is required`,
           ok: false,
-          status: 400
-        } 
+          status: 206,
+        },
       };
     }
   }
