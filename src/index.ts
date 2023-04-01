@@ -6,10 +6,10 @@ import { prismaDB } from "../prisma/db/prisma";
 import { PrismaLoginUserRepository } from "./repositories/login-user/prisma-login-user";
 import { LoginUserController } from "./controllers/login-user/login-user";
 import { authMiddleware } from "./middleware/Auth";
-import { PrismaCreateRoomRepository } from "./repositories/create-room/prisma-create-room";
-import { CreateRoomController } from "./controllers/create-room/create-room";
-import { PrismaGetRoomsByUserRepository } from "./repositories/get-room-by-user/prisma-get-rooms-by-user";
-import { GetRoomsByUserController } from "./controllers/get-rooms-user/get-rooms-user";
+import { PrismaCreateRoomRepository } from "./repositories/room/create-room/prisma-create-room";
+import { CreateRoomController } from "./controllers/room/create-room/create-room";
+import { PrismaGetRoomsByUserRepository } from "./repositories/room/get-room-by-user/prisma-get-rooms-by-user";
+import { GetRoomsByUserController } from "./controllers/room/get-rooms-user/get-rooms-user";
 import PrismaCreateQuestionRepository from "./repositories/question/create-question/prisma-create-question";
 import { CreateQuestionController } from "./controllers/question/create-question/create-question";
 import { PrismaCreateAnswerRepository } from "./repositories/answer/create-answer/prisma-create-answer";
@@ -25,6 +25,8 @@ import { PrismaUpdateQuestionRepository } from "./repositories/question/update-q
 import { UpdateQuestionController } from "./controllers/question/update-question/update-question";
 import { PrismaDeleteQuestionRepository } from "./repositories/question/delete-question/prisma-delete-question";
 import { DeleteQuestionController } from "./controllers/question/delete-question/delete-question";
+import { PrismaDeleteRoomRepository } from "./repositories/room/delete-room/prisma-delete-room";
+import { DeleteRoomController } from "./controllers/room/delete-room/delete-room";
 
 async function main() {
   config();
@@ -87,9 +89,21 @@ async function main() {
     );
 
     const { statusCode, body } = await getRoomsByUserController.handle({
-      params: {
-        user_id: BodyWithToken(req),
-      },
+      params: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.delete("/rooms/:room_id", async (req, res) => {
+    const prismaDeleteRoomRepository = new PrismaDeleteRoomRepository();
+
+    const deleteRoomController = new DeleteRoomController(
+      prismaDeleteRoomRepository
+    );
+
+    const { statusCode, body } = await deleteRoomController.handle({
+      params: BodyWithToken(req),
     });
 
     res.status(statusCode).send(body);

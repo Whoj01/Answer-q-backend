@@ -1,5 +1,5 @@
 import { Room } from "@prisma/client";
-import { HttpResponse, HttpResquest } from "../protocols";
+import { HttpResponse, HttpResquest } from "../../protocols";
 
 class params {
   constructor(

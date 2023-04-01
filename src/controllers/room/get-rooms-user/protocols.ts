@@ -1,5 +1,5 @@
-import { Room } from "../../models/Room";
-import { HttpResponse, HttpResquest } from "../protocols";
+import { Room } from "../../../models/Room";
+import { HttpResponse, HttpResquest } from "../../protocols";
 
 class params {
   constructor(private readonly user_id?: number) {}

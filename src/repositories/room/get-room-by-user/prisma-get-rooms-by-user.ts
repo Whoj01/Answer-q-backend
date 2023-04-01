@@ -1,9 +1,9 @@
-import { prismaDB } from "../../../prisma/db/prisma";
+import { prismaDB } from "../../../../prisma/db/prisma";
 import {
   GetRoomsUserParams,
   IGetRoomsByUserRepository,
-} from "../../controllers/get-rooms-user/protocols";
-import { Room } from "../../models/Room";
+} from "../../../controllers/room/get-rooms-user/protocols";
+import { Room } from "../../../models/Room";
 
 export class PrismaGetRoomsByUserRepository
   implements IGetRoomsByUserRepository

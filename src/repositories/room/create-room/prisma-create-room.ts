@@ -2,8 +2,8 @@ import { Room } from "@prisma/client";
 import {
   CreateRoomParams,
   ICreateRoomRepository,
-} from "../../controllers/create-room/protocols";
-import { prismaDB } from "../../../prisma/db/prisma";
+} from "../../../controllers/room/create-room/protocols";
+import { prismaDB } from "../../../../prisma/db/prisma";
 
 export class PrismaCreateRoomRepository implements ICreateRoomRepository {
   async createRoom(params: CreateRoomParams): Promise<Room> {

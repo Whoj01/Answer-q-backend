@@ -3,20 +3,20 @@ import {
   HttpResponse,
   params,
   requiredFieldsError,
-} from "../protocols";
+} from "../../protocols";
 import {
   GetRoomsUserParams,
   IGetRoomsByUserController,
   IGetRoomsByUserRepository,
   KeysOfGetRoomsUser,
 } from "./protocols";
-import { verifyRequiredFields } from "../../utils/verify-required-fields";
+import { verifyRequiredFields } from "../../../utils/verify-required-fields";
 import {
   errorRequest,
   successesRequest,
   tryAgainLater,
-} from "../../utils/responses";
-import { Room } from "../../models/Room";
+} from "../../../utils/responses";
+import { Room } from "../../../models/Room";
 
 export class GetRoomsByUserController implements IGetRoomsByUserController {
   constructor(
