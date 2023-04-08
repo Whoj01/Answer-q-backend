@@ -20,8 +20,6 @@ model User {
   participant Participants[]
   questions Question[]
   answer Answer[]
-
-  @@index([nickname, email, password])
 }
 
 model Room {

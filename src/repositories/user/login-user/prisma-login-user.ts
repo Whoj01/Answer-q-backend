@@ -1,9 +1,9 @@
 import {
   ILoginUserRepository,
   loginUserParams,
-} from "../../controllers/login-user/protocols";
-import { prismaDB } from "../../../prisma/db/prisma";
-import { User } from "../../models/User";
+} from "../../../controllers/user/login-user/protocols";
+import { prismaDB } from "../../../../prisma/db/prisma";
+import { User } from "../../../models/User";
 
 export class PrismaLoginUserRepository implements ILoginUserRepository {
   async findUser(user: loginUserParams): Promise<User> {

@@ -1,5 +1,5 @@
-import { User } from "../../models/User";
-import { HttpResquest, HttpResponse } from "../protocols";
+import { User } from "../../../models/User";
+import { HttpResquest, HttpResponse } from "../../protocols";
 
 class params {
   constructor(readonly email?: string, readonly password?: string) {}

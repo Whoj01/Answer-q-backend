@@ -1,10 +1,10 @@
 import express from "express";
-import { PrismaCreateUserRepository } from "./repositories/create-user/prisma-create-user";
-import { CreateUserController } from "./controllers/create-user/create-user";
+import { PrismaCreateUserRepository } from "./repositories/user/create-user/prisma-create-user";
+import { CreateUserController } from "./controllers/user/create-user/create-user";
 import { config } from "dotenv";
 import { prismaDB } from "../prisma/db/prisma";
-import { PrismaLoginUserRepository } from "./repositories/login-user/prisma-login-user";
-import { LoginUserController } from "./controllers/login-user/login-user";
+import { PrismaLoginUserRepository } from "./repositories/user/login-user/prisma-login-user";
+import { LoginUserController } from "./controllers/user/login-user/login-user";
 import { authMiddleware } from "./middleware/Auth";
 import { PrismaCreateRoomRepository } from "./repositories/room/create-room/prisma-create-room";
 import { CreateRoomController } from "./controllers/room/create-room/create-room";
@@ -29,6 +29,8 @@ import { PrismaDeleteRoomRepository } from "./repositories/room/delete-room/pris
 import { DeleteRoomController } from "./controllers/room/delete-room/delete-room";
 import { PrismaEditRoomRepository } from "./repositories/room/edit-room/prisma-edit-room";
 import { EditRoomController } from "./controllers/room/edit-room/edit-room";
+import { PrismaEditUserRepository } from "./repositories/user/edit-user/prisma-edit-user";
+import { EditUserController } from "./controllers/user/edit-user/edit-user";
 
 async function main() {
   config();
@@ -68,6 +70,18 @@ async function main() {
   });
 
   app.use(authMiddleware);
+
+  app.patch("/users", async (req, res) => {
+    const prismaEditUserRepository = new PrismaEditUserRepository();
+
+    const editUserController = new EditUserController(prismaEditUserRepository);
+
+    const { statusCode, body } = await editUserController.handle({
+      body: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
 
   app.post("/rooms", async (req, res) => {
     const prismaCreateRoomRepository = new PrismaCreateRoomRepository();
@@ -223,7 +237,7 @@ async function main() {
   });
 
   app.listen(port, () => {
-    console.log(`listening on port ${port}`);
+    `listening on port ${port}`;
   });
 }
 

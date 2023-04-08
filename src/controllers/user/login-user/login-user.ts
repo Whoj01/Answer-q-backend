@@ -1,24 +1,24 @@
 import { sign, verify } from "crypto";
-import { User } from "../../models/User";
+import { User } from "../../../models/User";
 import {
   HttpResquest,
   HttpResponse,
   paramsBody,
   requiredFieldsError,
-} from "../protocols";
+} from "../../protocols";
 import {
   ILoginUserController,
   ILoginUserRepository,
   keysOfLoginUser,
   loginUserParams,
 } from "./protocols";
-import { signToken } from "../../utils/jwt";
-import { verifyRequiredFields } from "../../utils/verify-required-fields";
+import { signToken } from "../../../utils/jwt";
+import { verifyRequiredFields } from "../../../utils/verify-required-fields";
 import {
   errorRequest,
   successesRequest,
   tryAgainLater,
-} from "../../utils/responses";
+} from "../../../utils/responses";
 import { ok } from "assert";
 
 export class LoginUserController implements ILoginUserController {

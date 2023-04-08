@@ -1,10 +1,10 @@
 import {
   CreateUserParams,
   ICreateUserRepository,
-} from "../../controllers/create-user/protocols";
-import { User } from "../../models/User";
-import { prismaDB } from "../../../prisma/db/prisma";
-import { generateHash } from "../../utils/generate-remember-token";
+} from "../../../controllers/user/create-user/protocols";
+import { User } from "../../../models/User";
+import { prismaDB } from "../../../../prisma/db/prisma";
+import { generateHash } from "../../../utils/generate-remember-token";
 
 export class PrismaCreateUserRepository implements ICreateUserRepository {
   async createUser(params: CreateUserParams): Promise<User> {

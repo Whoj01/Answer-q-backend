@@ -1,16 +1,16 @@
-import { User } from "../../models/User";
+import { User } from "../../../models/User";
 import {
   errorRequest,
   successesRequest,
   tryAgainLater,
-} from "../../utils/responses";
-import { verifyRequiredFields } from "../../utils/verify-required-fields";
+} from "../../../utils/responses";
+import { verifyRequiredFields } from "../../../utils/verify-required-fields";
 import {
   HttpResquest,
   HttpResponse,
   paramsBody,
   requiredFieldsError,
-} from "../protocols";
+} from "../../protocols";
 import {
   CreateUserParams,
   ICreateUserController,

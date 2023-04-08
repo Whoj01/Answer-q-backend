@@ -24,7 +24,7 @@ export class EditRoomController implements IController {
     httpResquest: HttpResquest<EditRoomParams>
   ): Promise<HttpResponse<string>> {
     try {
-      const { params }: params<number> = httpResquest;
+      const { params }: params<EditRoomParams> = httpResquest;
 
       const requiredFields: requiredFieldsError = verifyRequiredFields(
         KeysOfEditRoom,

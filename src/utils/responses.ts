@@ -17,7 +17,7 @@ export function tryAgainLater(
 export function successesRequest(
   message: string,
   statusCode: number,
-  data?: any
+  data: any = []
 ) {
   return {
     statusCode,

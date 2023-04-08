@@ -1,5 +1,5 @@
-import { User } from "../../models/User";
-import { HttpResponse, HttpResquest } from "../protocols";
+import { User } from "../../../models/User";
+import { HttpResponse, HttpResquest } from "../../protocols";
 
 /*
  * This class returns the keys of the interface that contains the required fields used to create a user
