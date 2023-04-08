@@ -31,6 +31,8 @@ import { PrismaEditRoomRepository } from "./repositories/room/edit-room/prisma-e
 import { EditRoomController } from "./controllers/room/edit-room/edit-room";
 import { PrismaEditUserRepository } from "./repositories/user/edit-user/prisma-edit-user";
 import { EditUserController } from "./controllers/user/edit-user/edit-user";
+import { PrismaVerifyEmail } from "./repositories/user/forgot-password/prisma-verify-email/prisma-verify-email";
+import { SendRecoveryEmailController } from "./controllers/user/forgot-password/send-email/forgot-password";
 
 async function main() {
   config();
@@ -49,6 +51,18 @@ async function main() {
     );
 
     const { statusCode, body } = await loginUserController.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.post("/forgot-password", async (req, res) => {
+    const prismaSendEmail = new PrismaVerifyEmail();
+
+    const sendRecoveryEmail = new SendRecoveryEmailController(prismaSendEmail);
+
+    const { statusCode, body } = await sendRecoveryEmail.handle({
       body: req.body,
     });
 
