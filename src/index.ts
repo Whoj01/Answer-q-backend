@@ -33,6 +33,10 @@ import { PrismaEditUserRepository } from "./repositories/user/edit-user/prisma-e
 import { EditUserController } from "./controllers/user/edit-user/edit-user";
 import { PrismaVerifyEmail } from "./repositories/user/forgot-password/prisma-verify-email/prisma-verify-email";
 import { SendRecoveryEmailController } from "./controllers/user/forgot-password/send-email/forgot-password";
+import { PrismaChangePassRepository } from "./repositories/user/forgot-password/prisma-change-pass/prisma-change-pass";
+import { IChangePassRepository } from "./controllers/user/forgot-password/change-pass/protocols";
+import { IController } from "./controllers/protocols";
+import { ChangePassController } from "./controllers/user/forgot-password/change-pass/change-pass";
 
 async function main() {
   config();
@@ -63,6 +67,21 @@ async function main() {
     const sendRecoveryEmail = new SendRecoveryEmailController(prismaSendEmail);
 
     const { statusCode, body } = await sendRecoveryEmail.handle({
+      body: req.body,
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.patch("/forgot-password", async (req, res) => {
+    const prismaChangePassRepository: IChangePassRepository =
+      new PrismaChangePassRepository();
+
+    const changePassController: IController = new ChangePassController(
+      prismaChangePassRepository
+    );
+
+    const { statusCode, body } = await changePassController.handle({
       body: req.body,
     });
 
