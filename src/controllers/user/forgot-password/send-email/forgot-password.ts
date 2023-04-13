@@ -1,3 +1,5 @@
+import { setMessage } from "../../../../mail/setMessage";
+import transporter from "../../../../mail/transporter";
 import { errorRequest, successesRequest } from "../../../../utils/responses";
 import { verifyRequiredFields } from "../../../../utils/verify-required-fields";
 import {
@@ -37,22 +39,7 @@ export class SendRecoveryEmailController implements IController {
 
       if (!user) return errorRequest("user email not found", 404);
 
-      const message = {
-        from: "c1f5b9ace1-c2f138@inbox.mailtrap.io",
-        to: body.email,
-        subject: "Recuperação de senha AnswerQ",
-        text: "Estamos enviando esse email para recuperar sua senha em nossa plataforma AnswerQ",
-        html: "<h1>O email foi enviado</h1>",
-      };
-
-      const transporter = await nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 2525,
-        auth: {
-          user: "4ae311e6a8f4b5",
-          pass: "238b559cb0b8d9",
-        },
-      });
+      const message = setMessage(body.email, user.token_pass);
 
       transporter.sendMail(message, function (err: any) {
         if (err) {
