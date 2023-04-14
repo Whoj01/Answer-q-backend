@@ -38,7 +38,7 @@ Atualmente essas são as atuais funcionaliadades do projeto:
 - Login de usuário.
 - Recuperação de senha via email.
 - Criação e exclusão de salas.
-- Criação, exclusão e atualizaçã de perguntas dentro da sala.
+- Criação, exclusão e atualização de perguntas dentro da sala.
 - Criação, exclusão e atualização de respostas dentro da sala.
 
 
