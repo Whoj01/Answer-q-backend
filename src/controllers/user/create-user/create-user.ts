@@ -44,13 +44,13 @@ export class CreateUserController implements ICreateUserController {
           503
         );
 
-      successesRequest("User created successfully", 201, user);
+      return successesRequest("User created successfully", 201, user);
     } catch (error: any) {
-      if (error.meta.target[0] === "email") {
+      if (error.meta?.target[0] === "email") {
         return errorRequest("Email already exists", 406);
       }
 
-      if (error.meta.target[0] === "nickname") {
+      if (error.meta?.target[0] === "nickname") {
         return errorRequest("Nickname already exists", 406);
       }
 

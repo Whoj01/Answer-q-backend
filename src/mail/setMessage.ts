@@ -33,7 +33,7 @@ export function setMessage(mail: string, link: string) {
             </p>
 
             <p class="font-weight: 400; ">
-              https://answerQ/recuperacao-senha?token=${link}
+              https://answerQ/recuperacao-senha?token=${link}&email=${mail}
             </p>
 
             <p>Caso você não tenha solicitado esta recuperação de senha, por favor, ignore este e-mail.</p>

@@ -43,7 +43,7 @@ export class LoginUserController implements ILoginUserController {
         return tryAgainLater("Incorrect username or password", 404);
       }
 
-      const token: string = signToken(user);
+      const token: string = signToken(user, "30m");
 
       return successesRequest("User loged successfully", 202, token);
     } catch (err: any) {
