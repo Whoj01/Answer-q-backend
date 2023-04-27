@@ -39,6 +39,8 @@ import { IController } from "./controllers/protocols";
 import { ChangePassController } from "./controllers/user/forgot-password/change-pass/change-pass";
 import { PrismaSetIsAllowedRepository } from "./repositories/participants/is-allowed/prisma-is-allowed";
 import { SetIsAllowedController } from "./controllers/participants/is-allowed/is-allowed";
+import { PrismaGetIsAllowedRepository } from "./repositories/participants/get-is-allowed/prisma-get-is-allowed";
+import { GetIsAllowedController } from "./controllers/participants/get-is-allowed/get-is-allowed";
 
 async function main() {
   config();
@@ -283,6 +285,20 @@ async function main() {
     );
 
     const { statusCode, body } = await setIsAllowedController.handle({
+      body: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
+  });
+
+  app.get("/get-is-allowed", async (req, res) => {
+    const prismaGetIsAllowed = new PrismaGetIsAllowedRepository();
+
+    const getIsAllowedController = new GetIsAllowedController(
+      prismaGetIsAllowed
+    );
+
+    const { statusCode, body } = await getIsAllowedController.handle({
       body: BodyWithToken(req),
     });
 
