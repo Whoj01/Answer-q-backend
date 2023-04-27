@@ -6,6 +6,7 @@ export function verifyRequiredFields(
 ): HttpResponse<string> {
   for (const field of fields) {
     if (!body?.[field]) {
+      console.log(body?.[field]);
       return {
         statusCode: 206,
         body: {

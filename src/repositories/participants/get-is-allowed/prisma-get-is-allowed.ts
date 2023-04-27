@@ -16,8 +16,6 @@ export class PrismaGetIsAllowedRepository implements IGetIsAllowedRepository {
       },
     });
 
-    console.log(userIsAllowed);
-
     if (!userIsAllowed) return false;
 
     return userIsAllowed.allowed;
