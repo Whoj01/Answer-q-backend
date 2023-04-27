@@ -40,11 +40,11 @@ Atualmente essas são as atuais funcionaliadades do projeto:
 - Criação e exclusão de salas.
 - Criação, exclusão e atualização de perguntas dentro da sala.
 - Criação, exclusão e atualização de respostas dentro da sala.
+- Verificar se o usuário é permitido ou não naquela sala.
 
 
 Futuras funcionalidades a serem implementadas: 
 
-- Verificar se o usuário é permitido ou não naquela sala.
 - Página de perfil para visualizar as salas, quantidade de perguntas e respostas do usuário.
 
 ## ⌨ Comandos
