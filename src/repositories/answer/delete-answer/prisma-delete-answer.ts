@@ -11,9 +11,9 @@ export class PrismaDeleteAnswerRepository implements IDeleteAnswerRepository {
         id: Number(params.id),
       },
       select: {
-        question: {
+        Question: {
           select: {
-            room: {
+            Room: {
               select: {
                 user_creator_id: true,
               },
@@ -34,7 +34,7 @@ export class PrismaDeleteAnswerRepository implements IDeleteAnswerRepository {
 
     if (
       userIsCreatorOfAnswer.user_answer_id === Number(params.user_id) ||
-      userIsCreatorOfRoom.question.room.user_creator_id ===
+      userIsCreatorOfRoom.Question.Room.user_creator_id ===
         Number(params.user_id)
     ) {
       await prismaDB.answer.delete({

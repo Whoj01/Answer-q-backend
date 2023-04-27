@@ -4,7 +4,6 @@ import {
   UpdateAnswerParams,
 } from "../../../controllers/answer/update-answer/protocols";
 import { Answer } from "../../../models/Answer";
-import { verifyToken } from "../../../utils/jwt";
 
 export class PrismaUpdateAnswerRepository implements IUpdateAnswerRepository {
   async updateAnswer(params: UpdateAnswerParams): Promise<Answer> {

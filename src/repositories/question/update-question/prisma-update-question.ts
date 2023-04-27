@@ -11,14 +11,14 @@ export class PrismaUpdateQuestionRepository
   async updateQuestion(params: UpdateQuestionParams): Promise<Question> {
     const find = await prismaDB.question.findUnique({
       where: {
-        id: Number(params.user_id),
+        id: Number(params.question_id),
       },
       select: {
         user_question_id: true,
       },
     });
 
-    if (find.user_question_id !== Number(params.user_id)) return;
+    if (find?.user_question_id !== params.user_id) return;
 
     const question = prismaDB.question.update({
       where: {

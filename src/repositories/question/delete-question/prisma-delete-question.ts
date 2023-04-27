@@ -13,7 +13,7 @@ export class PrismaDeleteQuestionRepository
         id: Number(params.question_id),
       },
       select: {
-        room: {
+        Room: {
           select: {
             user_creator_id: true,
           },
@@ -31,10 +31,10 @@ export class PrismaDeleteQuestionRepository
     });
 
     if (
-      userCreatorOfRoom.room.user_creator_id === Number(params.user_id) ||
+      userCreatorOfRoom.Room.user_creator_id === Number(params.user_id) ||
       userCreatorOfQuestion.user_question_id === Number(params.user_id)
     ) {
-      prismaDB.question.delete({
+      await prismaDB.question.delete({
         where: {
           id: Number(params.question_id),
         },

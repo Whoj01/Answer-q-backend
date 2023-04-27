@@ -5,7 +5,6 @@ import {
   returnOfEditUser,
 } from "../../../controllers/user/edit-user/protocols";
 import { User } from "../../../models/User";
-import { generateHash } from "../../../utils/generate-remember-token";
 
 export class PrismaEditUserRepository implements IEditUserRepository {
   async editUser(params: EditUserParams): Promise<returnOfEditUser> {
@@ -66,10 +65,6 @@ export class PrismaEditUserRepository implements IEditUserRepository {
         email: params.email?.length > 0 ? params.email : userUpdate.email,
         nickname:
           params.nickname?.length > 0 ? params.nickname : userUpdate.nickname,
-        token_pass:
-          params.nickname?.length > 0
-            ? generateHash(params.nickname)
-            : userUpdate.token_pass,
         password:
           params.password?.length > 0 ? params.password : userUpdate.password,
       },

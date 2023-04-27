@@ -20,7 +20,7 @@ export class PrismGetAnswersFromQuestion
         answer: {
           select: {
             content_answer: true,
-            user: {
+            User: {
               select: {
                 nickname: true,
               },

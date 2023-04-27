@@ -17,15 +17,15 @@ export class PrismaGetRoomsByUserRepository
         id: true,
         room_name: true,
         CreatedDate: true,
-        user: {
+        User: {
           select: {
             nickname: true,
           },
         },
         _count: {
           select: {
-            participants: true,
-            questions: true,
+            Participants: true,
+            Questions: true,
           },
         },
       },

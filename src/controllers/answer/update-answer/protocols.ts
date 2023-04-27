@@ -5,7 +5,7 @@ class params {
   constructor(
     readonly content_answer?: string,
     readonly answer_id?: string,
-    readonly user_answer_id?: string
+    readonly user_id?: string
   ) {}
 }
 

@@ -37,6 +37,8 @@ import { PrismaChangePassRepository } from "./repositories/user/forgot-password/
 import { IChangePassRepository } from "./controllers/user/forgot-password/change-pass/protocols";
 import { IController } from "./controllers/protocols";
 import { ChangePassController } from "./controllers/user/forgot-password/change-pass/change-pass";
+import { PrismaSetIsAllowedRepository } from "./repositories/participants/is-allowed/prisma-is-allowed";
+import { SetIsAllowedController } from "./controllers/participants/is-allowed/is-allowed";
 
 async function main() {
   config();
@@ -270,7 +272,21 @@ async function main() {
   });
 
   app.listen(port, () => {
-    `listening on port ${port}`;
+    console.log(`listening on port ${port}`);
+  });
+
+  app.post("/is-allowed", async (req, res) => {
+    const prismaSetIsAllowed = new PrismaSetIsAllowedRepository();
+
+    const setIsAllowedController = new SetIsAllowedController(
+      prismaSetIsAllowed
+    );
+
+    const { statusCode, body } = await setIsAllowedController.handle({
+      body: BodyWithToken(req),
+    });
+
+    res.status(statusCode).send(body);
   });
 }
 

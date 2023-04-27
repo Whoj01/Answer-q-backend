@@ -36,8 +36,6 @@ export class SendRecoveryEmailController implements IController {
 
       body.token_pass = token_pass;
 
-      console.log({ body });
-
       if (requiredFields) return requiredFields;
 
       const user: ReturnTokenPass | boolean =

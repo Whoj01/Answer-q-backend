@@ -2,7 +2,9 @@ export interface Room {
   id: number;
   user_creator_id?: number;
   room_name?: string;
-  user?: { nickname: string };
-  _count?: { participants: number; questions: number };
+  User?: { nickname: string };
+  _count?: { Participants: number; Questions: number };
   CreatedDate?: Date;
+  password?: string;
+  private?: boolean;
 }
